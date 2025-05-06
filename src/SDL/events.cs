@@ -1,4 +1,5 @@
 #region License
+
 /* SDL2# - C# Wrapper for SDL2
  *
  * Copyright (c) 2013-2020 Ethan Lee.
@@ -24,20 +25,21 @@
  * Ethan "flibitijibibo" Lee <flibitijibibo@flibitijibibo.com>
  *
  */
-#endregion
 
+#endregion
 
 #region Using Statements
+
 using System;
 using System.Runtime.InteropServices;
-#endregion
-namespace SDL2
-{
 
+#endregion
+
+namespace SDL2 {
     #region events.h
+
     /* The types of events that can be delivered. */
-    public enum EventType : uint
-    {
+    public enum EventType : uint {
         FirstEvent = 0,
 
         /* Application events */
@@ -104,6 +106,7 @@ namespace SDL2
 
         /* Drag and drop events */
         DropFile = 0x1000,
+
         /* Only available in 2.0.4 or higher */
         DropText,
         DropBegin,
@@ -121,6 +124,7 @@ namespace SDL2
         /* Render events */
         /* Only available in Sdl 2.0.2 or higher */
         RenderTargetsReset = 0x2000,
+
         /* Only available in Sdl 2.0.4 or higher */
         RenderDeviceReset,
 
@@ -135,16 +139,14 @@ namespace SDL2
     }
 
     /* Only available in 2.0.4 or higher */
-    public enum MouseWheelDirection : uint
-    {
+    public enum MouseWheelDirection : uint {
         Normal,
         Flipped
     }
 
     /* Fields shared by every event */
     [StructLayout(LayoutKind.Sequential)]
-    public struct GenericEvent
-    {
+    public struct GenericEvent {
         public EventType Type;
         public uint Timestamp;
     }
@@ -152,8 +154,7 @@ namespace SDL2
     // Ignore private members used for padding in this struct
 #pragma warning disable 0169
     [StructLayout(LayoutKind.Sequential)]
-    public struct DisplayEvent
-    {
+    public struct DisplayEvent {
         public EventType Type;
         public uint Timestamp;
         public uint Display;
@@ -169,8 +170,7 @@ namespace SDL2
 #pragma warning disable 0169
     /* Window state change event data (event.window.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct WindowEvent
-    {
+    public struct WindowEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
@@ -187,15 +187,15 @@ namespace SDL2
 #pragma warning disable 0169
     /* Keyboard button event structure (event.key.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct KeyboardEvent
-    {
+    public struct KeyboardEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
         public byte State;
-        ///<summary> non-zero if this is a repeat </summary>
 
+        ///<summary> non-zero if this is a repeat </summary>
         public byte Repeat;
+
         private byte padding2;
         private byte padding3;
         public Keysym Keysym;
@@ -203,8 +203,7 @@ namespace SDL2
 #pragma warning restore 0169
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct TextEditingEvent
-    {
+    public unsafe struct TextEditingEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
@@ -214,8 +213,7 @@ namespace SDL2
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct TextInputEvent
-    {
+    public unsafe struct TextInputEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
@@ -226,14 +224,15 @@ namespace SDL2
 #pragma warning disable 0169
     /* Mouse motion event structure (event.motion.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct MouseMotionEvent
-    {
+    public struct MouseMotionEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
         public uint Which;
+
         ///<summary> bitmask of buttons </summary>
         public byte State;
+
         private byte padding1;
         private byte padding2;
         private byte padding3;
@@ -248,18 +247,21 @@ namespace SDL2
 #pragma warning disable 0169
     /* Mouse button event structure (event.button.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct MouseButtonEvent
-    {
+    public struct MouseButtonEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
         public uint Which;
+
         ///<summary> button id </summary>
         public byte Button;
+
         ///<summary> PRESSED or RELEASED </summary>
         public byte State;
+
         ///<summary> 1 for single-click, 2 for double-click, etc. </summary>
         public byte Clicks;
+
         private byte padding1;
         public int X;
         public int Y;
@@ -268,16 +270,18 @@ namespace SDL2
 
     /* Mouse wheel event structure (event.wheel.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct MouseWheelEvent
-    {
+    public struct MouseWheelEvent {
         public EventType Type;
         public uint Timestamp;
         public uint WindowID;
         public uint Which;
+
         ///<summary> amount scrolled horizontally </summary>
         public int X;
+
         ///<summary> amount scrolled vertically </summary>
         public int Y;
+
         ///<summary> Set to one of the MOUSEWHEEL_* defines </summary>
         public uint Direction;
     }
@@ -286,12 +290,13 @@ namespace SDL2
 #pragma warning disable 0169
     /* Joystick axis motion event structure (event.jaxis.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct JoyAxisEvent
-    {
+    public struct JoyAxisEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+
         public byte Axis;
         private byte padding1;
         private byte padding2;
@@ -305,12 +310,13 @@ namespace SDL2
 #pragma warning disable 0169
     /* Joystick trackball motion event structure (event.jball.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct JoyBallEvent
-    {
+    public struct JoyBallEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+
         public byte Ball;
         private byte padding1;
         private byte padding2;
@@ -324,14 +330,16 @@ namespace SDL2
 #pragma warning disable 0169
     /* Joystick hat position change event struct (event.jhat.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct JoyHatEvent
-    {
+    public struct JoyHatEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+
         ///<summary> index of the hat </summary>
         public byte Hat;
+
         public byte Value;
         private byte padding1;
         private byte padding2;
@@ -342,15 +350,18 @@ namespace SDL2
 #pragma warning disable 0169
     /* Joystick button event structure (event.jbutton.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct JoyButtonEvent
-    {
+    public struct JoyButtonEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+
         public byte Button;
+
         ///<summary> PRESSED or RELEASED </summary>
         public byte State;
+
         private byte padding1;
         private byte padding2;
     }
@@ -358,24 +369,33 @@ namespace SDL2
 
     /* Joystick device event structure (event.jdevice.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct JoyDeviceEvent
-    {
+    public struct JoyDeviceEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+    }
+    
+    [StructLayout(LayoutKind.Sequential)]
+    public struct JoyBatteryEvent {
+        public uint Type;        /**< SDL_JOYBATTERYUPDATED */
+        public uint Timestamp;   /**< In milliseconds, populated using SDL_GetTicks() */
+        public int Which; /**< The joystick instance id */
+        public JoystickPowerLevel Level; /**< The joystick battery level */
     }
 
     // Ignore private members used for padding in this struct
 #pragma warning disable 0169
     /* Game controller axis motion event (event.caxis.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct ControllerAxisEvent
-    {
+    public struct ControllerAxisEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+
         public byte Axis;
         private byte padding1;
         private byte padding2;
@@ -389,12 +409,13 @@ namespace SDL2
 #pragma warning disable 0169
     /* Game controller button event (event.cbutton.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct ControllerButtonEvent
-    {
+    public struct ControllerButtonEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> JoystickID </summary>
         public int Which;
+
         public byte Button;
         public byte State;
         private byte padding1;
@@ -404,10 +425,10 @@ namespace SDL2
 
     /* Game controller device event (event.cdevice.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct ControllerDeviceEvent
-    {
+    public struct ControllerDeviceEvent {
         public EventType Type;
         public uint Timestamp;
+
         /// <summary>joystick id for ADDED, else instance id</summary>
         public int Which;
     }
@@ -416,8 +437,7 @@ namespace SDL2
 #pragma warning disable 0169
     /* Audio device event (event.adevice.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct AudioDeviceEvent
-    {
+    public struct AudioDeviceEvent {
         public uint Type;
         public uint Timestamp;
         public uint Which;
@@ -429,8 +449,7 @@ namespace SDL2
 #pragma warning restore 0169
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct TouchFingerEvent
-    {
+    public struct TouchFingerEvent {
         public uint Type;
         public uint Timestamp;
         public long TouchId; // TouchID
@@ -443,8 +462,7 @@ namespace SDL2
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct MultiGestureEvent
-    {
+    public struct MultiGestureEvent {
         public uint Type;
         public uint Timestamp;
         public long TouchId; // TouchID
@@ -457,8 +475,7 @@ namespace SDL2
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public struct DollarGestureEvent
-    {
+    public struct DollarGestureEvent {
         public uint Type;
         public uint Timestamp;
         public long TouchId; // TouchID
@@ -473,8 +490,7 @@ namespace SDL2
      * default
      */
     [StructLayout(LayoutKind.Sequential)]
-    public struct DropEvent
-    {
+    public struct DropEvent {
         public EventType Type;
         public uint Timestamp;
 
@@ -487,8 +503,7 @@ namespace SDL2
     }
 
     [StructLayout(LayoutKind.Sequential)]
-    public unsafe struct SensorEvent
-    {
+    public unsafe struct SensorEvent {
         public EventType Type;
         public uint Timestamp;
         public int Which;
@@ -497,32 +512,32 @@ namespace SDL2
 
     /* The "quit requested" event */
     [StructLayout(LayoutKind.Sequential)]
-    public struct QuitEvent
-    {
+    public struct QuitEvent {
         public EventType Type;
         public uint Timestamp;
     }
 
     /* A user defined event (event.user.*) */
     [StructLayout(LayoutKind.Sequential)]
-    public struct UserEvent
-    {
+    public struct UserEvent {
         public uint Type;
         public uint Timestamp;
         public uint WindowID;
         public int Code;
+
         ///<summary> user-defined </summary>
         public IntPtr Data1;
+
         ///<summary> user-defined </summary>
         public IntPtr Data2;
     }
 
     /* A video driver dependent event (event.syswm.*), disabled */
     [StructLayout(LayoutKind.Sequential)]
-    public struct SysWMEvent
-    {
+    public struct SysWMEvent {
         public EventType Type;
         public uint Timestamp;
+
         ///<summary> SysWMmsg*, system-dependent</summary>
         public IntPtr Msg;
     }
@@ -530,74 +545,48 @@ namespace SDL2
     /* General event structure */
     // C# doesn't do unions, so we do this ugly thing. */
     [StructLayout(LayoutKind.Explicit)]
-    public struct Event
-    {
-        [FieldOffset(0)]
-        public EventType Type;
-        [FieldOffset(0)]
-        public DisplayEvent Display;
-        [FieldOffset(0)]
-        public WindowEvent Window;
-        [FieldOffset(0)]
-        public KeyboardEvent Key;
-        [FieldOffset(0)]
-        public TextEditingEvent Edit;
-        [FieldOffset(0)]
-        public TextInputEvent Text;
-        [FieldOffset(0)]
-        public MouseMotionEvent Motion;
-        [FieldOffset(0)]
-        public MouseButtonEvent Button;
-        [FieldOffset(0)]
-        public MouseWheelEvent Wheel;
-        [FieldOffset(0)]
-        public JoyAxisEvent JAxis;
-        [FieldOffset(0)]
-        public JoyBallEvent JBall;
-        [FieldOffset(0)]
-        public JoyHatEvent JHat;
-        [FieldOffset(0)]
-        public JoyButtonEvent JButton;
-        [FieldOffset(0)]
-        public JoyDeviceEvent JDevice;
-        [FieldOffset(0)]
-        public ControllerAxisEvent CAxis;
-        [FieldOffset(0)]
-        public ControllerButtonEvent CButton;
-        [FieldOffset(0)]
-        public ControllerDeviceEvent CDevice;
-        [FieldOffset(0)]
-        public AudioDeviceEvent ADevice;
-        [FieldOffset(0)]
-        public SensorEvent Sensor;
-        [FieldOffset(0)]
-        public QuitEvent Quit;
-        [FieldOffset(0)]
-        public UserEvent User;
-        [FieldOffset(0)]
-        public SysWMEvent Syswm;
-        [FieldOffset(0)]
-        public TouchFingerEvent TFinger;
-        [FieldOffset(0)]
-        public MultiGestureEvent MGesture;
-        [FieldOffset(0)]
-        public DollarGestureEvent DGesture;
-        [FieldOffset(0)]
-        public DropEvent Drop;
+    public struct Event {
+        [FieldOffset(0)] public EventType Type;
+        [FieldOffset(0)] public DisplayEvent Display;
+        [FieldOffset(0)] public WindowEvent Window;
+        [FieldOffset(0)] public KeyboardEvent Key;
+        [FieldOffset(0)] public TextEditingEvent Edit;
+        [FieldOffset(0)] public TextInputEvent Text;
+        [FieldOffset(0)] public MouseMotionEvent Motion;
+        [FieldOffset(0)] public MouseButtonEvent Button;
+        [FieldOffset(0)] public MouseWheelEvent Wheel;
+        [FieldOffset(0)] public JoyAxisEvent JAxis;
+        [FieldOffset(0)] public JoyBallEvent JBall;
+        [FieldOffset(0)] public JoyHatEvent JHat;
+        [FieldOffset(0)] public JoyButtonEvent JButton;
+        [FieldOffset(0)] public JoyDeviceEvent JDevice;
+        [FieldOffset(0)] public ControllerAxisEvent CAxis;
+        [FieldOffset(0)] public ControllerButtonEvent CButton;
+        [FieldOffset(0)] public ControllerDeviceEvent CDevice;
+        [FieldOffset(0)] public AudioDeviceEvent ADevice;
+        [FieldOffset(0)] public SensorEvent Sensor;
+        [FieldOffset(0)] public QuitEvent Quit;
+        [FieldOffset(0)] public UserEvent User;
+        [FieldOffset(0)] public SysWMEvent Syswm;
+        [FieldOffset(0)] public TouchFingerEvent TFinger;
+        [FieldOffset(0)] public MultiGestureEvent MGesture;
+        [FieldOffset(0)] public DollarGestureEvent DGesture;
+        [FieldOffset(0)] public DropEvent Drop;
     }
+
     [UnmanagedFunctionPointer(CallingConvention.Cdecl)]
     public delegate int EventFilter(
         IntPtr userdata, // void*
         IntPtr sdlevent // Event* event, lolC#
     );
-    public enum EventAction
-    {
+
+    public enum EventAction {
         Add,
         Peek,
         Get
     }
-    public static partial class SDL
-    {
+
+    public static partial class SDL {
         /* General keyboard/mouse state definitions. */
         public const byte PRESSED = 1;
         public const byte RELEASED = 0;
@@ -684,7 +673,7 @@ namespace SDL2
         public static extern int WaitEvent(out Event _event);
 
         /* Waits until the specified timeout (in ms) for the next event
-		 */
+         */
         /// <summary>
         /// Waits until the specified timeout (in milliseconds) for the next available event.
         /// 
@@ -726,24 +715,23 @@ namespace SDL2
             out IntPtr filter,
             out IntPtr userdata
         );
+
         public static bool GetEventFilter(
             out EventFilter filter,
             out IntPtr userdata
-        )
-        {
+        ) {
             IntPtr result = IntPtr.Zero;
             bool retval = GetEventFilter(out result, out userdata);
-            if (result != IntPtr.Zero)
-            {
+            if (result != IntPtr.Zero) {
                 filter = (EventFilter)Marshal.GetDelegateForFunctionPointer(
                     result,
                     typeof(EventFilter)
                 );
             }
-            else
-            {
+            else {
                 filter = null;
             }
+
             return retval;
         }
 
@@ -803,8 +791,7 @@ namespace SDL2
         public static extern byte EventState(EventType type, int state);
 
         /* Get the state of an event */
-        public static byte GetEventState(EventType type)
-        {
+        public static byte GetEventState(EventType type) {
             return EventState(type, QUERY);
         }
 
@@ -817,6 +804,7 @@ namespace SDL2
         /// </summary>
         [DllImport(nativeLibName, CallingConvention = CallingConvention.Cdecl, EntryPoint = "SDL_RegisterEvents")]
         public static extern uint RegisterEvents(int numevents);
+
         #endregion
     }
 }
